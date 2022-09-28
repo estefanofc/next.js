@@ -11,6 +11,7 @@ type Props = {
   excerpt: string
   author: Author
   slug: string
+  premium: boolean
 }
 
 const HeroPost = ({
@@ -20,7 +21,9 @@ const HeroPost = ({
   excerpt,
   author,
   slug,
+  premium
 }: Props) => {
+  const premiumLabel = premium ? ' (premium)' : ''
   return (
     <section>
       <div className="mb-8 md:mb-16">
@@ -30,7 +33,7 @@ const HeroPost = ({
         <div>
           <h3 className="mb-4 text-4xl lg:text-6xl leading-tight">
             <Link as={`/posts/${slug}`} href="/posts/[slug]">
-              <a className="hover:underline">{title}</a>
+              <a className="hover:underline">{`${title}${premiumLabel}`}</a>
             </Link>
           </h3>
           <div className="mb-4 md:mb-0 text-lg">

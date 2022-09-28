@@ -19,7 +19,6 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
   }
 
   const items: Items = {}
-
   // Ensure only the minimal needed data is exposed
   fields.forEach((field) => {
     if (field === 'slug') {
@@ -28,12 +27,10 @@ export function getPostBySlug(slug: string, fields: string[] = []) {
     if (field === 'content') {
       items[field] = content
     }
-
     if (typeof data[field] !== 'undefined') {
       items[field] = data[field]
     }
   })
-
   return items
 }
 

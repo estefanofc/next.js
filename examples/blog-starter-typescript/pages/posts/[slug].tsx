@@ -11,6 +11,9 @@ import Head from 'next/head'
 import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import PostType from '../../types/post'
+import { Modal } from 'semantic-ui-react'
+import { useContext, useEffect } from 'react'
+import { LoggedInContext } from '../_app'
 
 type Props = {
   post: PostType
@@ -18,11 +21,24 @@ type Props = {
   preview?: boolean
 }
 
-const Post = ({ post, morePosts, preview }: Props) => {
+const Post = (props: any) => {
+  const { post, morePosts, preview }: Props = props;
   const router = useRouter()
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
+  const { loggedIn } = useContext(LoggedInContext);
+  const logIn = () => {
+    document.cookie = 'loggedIn=true'
+    location.reload()
+  }
+  if (post?.premium && !loggedIn) {
+    return (<>
+    <div>Not premium user. Please log in </div>
+    <button onClick={() => logIn()}>Log in</button>
+    </>)
+  }
+
   return (
     <Layout preview={preview}>
       <Container>
@@ -70,6 +86,7 @@ export async function getStaticProps({ params }: Params) {
     'content',
     'ogImage',
     'coverImage',
+    'premium'
   ])
   const content = await markdownToHtml(post.content || '')
 
